@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIAJ Seguros - Solicite sua Cotação</title>
+<title>MIAJ Corretora de Seguros - Solicite sua Cotação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -164,7 +164,7 @@ body { font-family: 'Open Sans', sans-serif; background: #f0f1f3; min-height: 10
       </div>
       <div>
         <div class="logo-name">MIAJ</div>
-        <div class="logo-sub">Seguros</div>
+        <div class="logo-sub">Corretora de Seguros</div>
       </div>
     </div>
     <h1>Solicite sua Cotação</h1>
@@ -185,7 +185,7 @@ body { font-family: 'Open Sans', sans-serif; background: #f0f1f3; min-height: 10
   <div class="chat-header">
     <div class="chat-avatar">M</div>
     <div class="chat-header-info">
-      <div class="chat-header-name">MIAJ Seguros</div>
+      <div class="chat-header-name">MIAJ Corretora de Seguros</div>
       <div class="chat-header-status">Assistente Virtual</div>
     </div>
     <button class="chat-close" onclick="toggleChat()">×</button>
@@ -347,7 +347,7 @@ const RAMO_FIELDS = {
 };
 
 const FAQ_DATA = {
-  greeting: { text:"Olá! Sou o assistente virtual da MIAJ Seguros. Como posso ajudar?", options:[{label:"Quero fazer uma cotação",action:"cotacao"},{label:"Dúvidas sobre seguros",action:"duvidas"},{label:"Já sou cliente",action:"cliente"},{label:"Falar com um corretor",action:"corretor"}] },
+  greeting: { text:"Olá! Sou o assistente virtual da MIAJ Corretora de Seguros. Como posso ajudar?", options:[{label:"Quero fazer uma cotação",action:"cotacao"},{label:"Dúvidas sobre seguros",action:"duvidas"},{label:"Já sou cliente",action:"cliente"},{label:"Falar com um corretor",action:"corretor"}] },
   cotacao: { text:"Ótimo! Você pode preencher nosso formulário de cotação aqui mesmo nesta página. É rápido e sem compromisso!", options:[{label:"Quais ramos vocês trabalham?",action:"ramos"},{label:"Quanto tempo demora?",action:"tempo_cotacao"},{label:"Voltar ao início",action:"greeting"}] },
   duvidas: { text:"Claro! Sobre qual assunto?", options:[{label:"Seguro auto",action:"seguro_auto"},{label:"Seguro residencial",action:"seguro_residencial"},{label:"Seguro de vida",action:"seguro_vida"},{label:"Seguro viagem",action:"seguro_viagem"},{label:"Voltar ao início",action:"greeting"}] },
   cliente: { text:"Se você já é nosso cliente, pode entrar em contato diretamente com seu corretor pelo WhatsApp!", options:[{label:"Acionar sinistro",action:"sinistro"},{label:"Renovar apólice",action:"renovacao"},{label:"Alterar dados",action:"alteracao"},{label:"Voltar ao início",action:"greeting"}] },
@@ -528,7 +528,7 @@ function submitForm() {
   const ramoLabel = RAMOS.find(r => r.id === state.ramo)?.label || state.ramo;
   const now = new Date();
   let body = `═══════════════════════════════\n`;
-  body += `   NOVA COTAÇÃO - MIAJ SEGUROS\n`;
+  body += `   NOVA COTAÇÃO - MIAJ CORRETORA DE SEGUROS\n`;
   body += `═══════════════════════════════\n\n`;
   body += `Ramo: ${ramoLabel}\n`;
   body += `Data: ${now.toLocaleDateString("pt-BR")} às ${now.toLocaleTimeString("pt-BR")}\n\n`;
@@ -546,7 +546,7 @@ function submitForm() {
     }
   });
 
-  body += `\n═══════════════════════════════\nEnviado pelo formulário MIAJ Seguros`;
+  body += `\n═══════════════════════════════\nEnviado pelo formulário MIAJ Corretora de Seguros`;
   const subject = `Nova Cotação ${ramoLabel} - ${state.personal.nome}`;
 
   // Enviar via EmailJS
