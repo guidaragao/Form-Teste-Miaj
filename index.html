@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIAJ Seguros - Solicite sua Cotação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Open Sans', sans-serif; background: #f0f1f3; min-height: 100vh; }
+
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+/* ─── HEADER ─── */
+.header { background: linear-gradient(135deg, #1A2332 0%, #2C3E50 50%, #1A2332 100%); position: relative; overflow: hidden; }
+.header-pattern { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.04; background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 1px, transparent 20px), repeating-linear-gradient(-45deg, #fff 0, #fff 1px, transparent 1px, transparent 20px); }
+.header-inner { max-width: 900px; margin: 0 auto; padding: 40px 24px 36px; position: relative; }
+
+.logo-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.logo-circle { width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid #C41E3A; display: flex; align-items: center; justify-content: center; position: relative; }
+.logo-circle span { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 22px; color: #fff; letter-spacing: -1px; }
+.logo-notch { position: absolute; left: 50%; transform: translateX(-50%); width: 8px; height: 6px; background: #1A2332; }
+.logo-notch-top { top: -3px; }
+.logo-notch-bottom { bottom: -3px; }
+.logo-name { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 20px; color: #fff; letter-spacing: 2px; }
+.logo-sub { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 3px; text-transform: uppercase; }
+
+.header h1 { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 28px; color: #fff; margin-bottom: 8px; line-height: 1.2; }
+.header p { color: rgba(255,255,255,0.6); font-size: 15px; line-height: 1.5; max-width: 500px; }
+
+/* Progress */
+.progress { margin-top: 24px; display: flex; gap: 8px; align-items: center; }
+.progress-step { display: flex; align-items: center; gap: 8px; flex: 1; }
+.progress-step:last-child { flex: none; }
+.progress-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; font-family: 'Montserrat', sans-serif; flex-shrink: 0; transition: all 0.3s; }
+.progress-num.active { background: #C41E3A; color: #fff; border: none; }
+.progress-num.inactive { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); border: 1.5px solid rgba(255,255,255,0.2); }
+.progress-label { font-size: 11px; font-family: 'Montserrat', sans-serif; white-space: nowrap; }
+.progress-label.active { color: rgba(255,255,255,0.8); font-weight: 700; }
+.progress-label.inactive { color: rgba(255,255,255,0.3); }
+.progress-line { flex: 1; height: 2px; min-width: 20px; transition: background 0.3s; }
+.progress-line.active { background: #C41E3A; }
+.progress-line.inactive { background: rgba(255,255,255,0.1); }
+
+/* ─── CONTENT ─── */
+.content { max-width: 900px; margin: 0 auto; padding: 32px 24px 100px; }
+.section { animation: fadeIn 0.4s ease-out; }
+
+.section-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 20px; color: #2C3E50; margin-bottom: 6px; }
+.section-subtitle { color: #6b7280; font-size: 14px; margin-bottom: 24px; }
+.section-title-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.section-icon { font-size: 24px; }
+
+/* ─── RAMO GRID ─── */
+.ramo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.ramo-card { background: #fff; border: 2px solid transparent; border-radius: 12px; padding: 20px 16px; cursor: pointer; text-align: center; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.ramo-card:hover { border-color: #C41E3A; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(196,30,58,0.12); }
+.ramo-card-icon { font-size: 28px; margin-bottom: 8px; }
+.ramo-card-label { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 13px; color: #2C3E50; }
+
+/* ─── FORM CARD ─── */
+.form-card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.form-grid .full-width { grid-column: 1 / -1; }
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 600; color: #2C3E50; font-family: 'Montserrat', sans-serif; }
+.form-label .req { color: #C41E3A; }
+
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 11px 14px; border-radius: 8px; border: 1.5px solid #d1d5db;
+  font-size: 14px; font-family: 'Open Sans', sans-serif; color: #2C3E50; background: #fff;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #C41E3A; box-shadow: 0 0 0 3px rgba(196,30,58,0.1); }
+.form-input.error, .form-select.error { border-color: #C41E3A; }
+.form-select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%232C3E50' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+.form-select.toggle { border-color: #C41E3A; font-weight: 600; }
+.form-textarea { resize: vertical; }
+.form-error { color: #C41E3A; font-size: 11px; margin-top: 4px; }
+
+/* Multicheck */
+.multicheck { display: flex; flex-wrap: wrap; gap: 8px; }
+.multicheck-btn { padding: 7px 14px; border-radius: 20px; font-size: 12px; border: 1.5px solid #d1d5db; background: #fff; color: #2C3E50; cursor: pointer; transition: all 0.2s; font-family: 'Open Sans', sans-serif; }
+.multicheck-btn.checked { border-color: #C41E3A; background: #C41E3A; color: #fff; }
+
+/* Hint boxes */
+.hint-box { border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+.hint-yellow { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 1px solid #f59e0b; }
+.hint-yellow span:last-child { font-size: 13px; color: #92400e; }
+.hint-blue { background: linear-gradient(135deg, #dbeafe, #bfdbfe); border: 1px solid #3b82f6; }
+.hint-blue span:last-child { font-size: 13px; color: #1e40af; }
+.hint-icon { font-size: 20px; }
+
+/* Buttons */
+.btn-row { display: flex; gap: 12px; margin-top: 8px; }
+.btn-back { padding: 12px 24px; border-radius: 8px; border: 1.5px solid #d1d5db; background: #fff; color: #6b7280; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'Montserrat', sans-serif; }
+.btn-next { padding: 12px 32px; border-radius: 8px; border: none; background: #C41E3A; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif; transition: background 0.2s; }
+.btn-next:hover { background: #9B1830; }
+
+/* ─── SUCCESS ─── */
+.success { animation: fadeIn 0.5s ease-out; text-align: center; padding: 60px 20px; background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.success-check { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 36px; color: #fff; animation: pulse 1s ease-in-out; }
+.success h2 { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 24px; color: #2C3E50; margin-bottom: 8px; }
+.success p { color: #6b7280; font-size: 15px; line-height: 1.6; max-width: 400px; margin: 0 auto 8px; }
+.success .sub { color: #9ca3af; font-size: 13px; margin-bottom: 28px; }
+.success-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-whatsapp { padding: 12px 28px; border-radius: 8px; border: none; background: #25d366; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 8px; text-decoration: none; }
+
+/* ─── CHATBOT ─── */
+.chat-fab { position: fixed; bottom: 20px; right: 20px; width: 58px; height: 58px; border-radius: 50%; border: none; background: linear-gradient(135deg, #C41E3A, #9B1830); color: #fff; font-size: 24px; cursor: pointer; box-shadow: 0 4px 20px rgba(196,30,58,0.35); display: flex; align-items: center; justify-content: center; transition: all 0.3s; z-index: 1001; }
+.chat-fab:hover { transform: scale(1.08); }
+.chat-fab.open { background: #6b7280; }
+
+.chat-bubble { position: fixed; bottom: 82px; right: 20px; background: #fff; border-radius: 12px; padding: 8px 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); font-size: 12px; color: #2C3E50; z-index: 1001; animation: fadeIn 0.5s ease-out; max-width: 200px; }
+.chat-bubble-arrow { position: absolute; bottom: -6px; right: 24px; width: 12px; height: 12px; background: #fff; transform: rotate(45deg); box-shadow: 2px 2px 4px rgba(0,0,0,0.06); }
+
+.chatbot { position: fixed; bottom: 90px; right: 20px; width: 380px; max-width: calc(100vw - 40px); height: 520px; max-height: calc(100vh - 120px); background: #fff; border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 1000; overflow: hidden; animation: slideUp 0.3s ease-out; }
+.chatbot.open { display: flex; }
+
+.chat-header { background: linear-gradient(135deg, #C41E3A, #9B1830); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+.chat-avatar { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; font-family: 'Montserrat', sans-serif; }
+.chat-header-info { flex: 1; }
+.chat-header-name { color: #fff; font-weight: 700; font-size: 14px; font-family: 'Montserrat', sans-serif; }
+.chat-header-status { color: rgba(255,255,255,0.8); font-size: 11px; }
+.chat-close { background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: background 0.2s; }
+.chat-close:hover { background: rgba(255,255,255,0.15); }
+
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #f7f7f8; }
+.chat-msg-bot { display: flex; gap: 8px; align-items: flex-start; }
+.chat-msg-avatar { width: 28px; height: 28px; border-radius: 50%; background: #C41E3A; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 2px; font-family: 'Montserrat', sans-serif; }
+.chat-msg-text { background: #fff; border-radius: 4px 16px 16px 16px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #2C3E50; box-shadow: 0 1px 3px rgba(0,0,0,0.06); max-width: 280px; }
+.chat-msg-user { display: flex; justify-content: flex-end; }
+.chat-msg-user-text { background: #C41E3A; border-radius: 16px 4px 16px 16px; padding: 10px 14px; font-size: 13px; line-height: 1.5; color: #fff; max-width: 250px; }
+.chat-options { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.chat-option { background: #fff; border: 1.5px solid #C41E3A; border-radius: 20px; padding: 7px 14px; font-size: 12px; color: #C41E3A; cursor: pointer; text-align: left; transition: all 0.2s; font-family: 'Open Sans', sans-serif; }
+.chat-option:hover { background: #C41E3A; color: #fff; }
+.chat-footer { padding: 10px 16px; border-top: 1px solid #eee; background: #fff; font-size: 11px; color: #999; text-align: center; }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .full-width { grid-column: auto; }
+  .ramo-grid { grid-template-columns: repeat(3, 1fr); }
+  .header h1 { font-size: 22px; }
+  .progress-label { display: none; }
+  .chatbot { width: calc(100vw - 20px); right: 10px; bottom: 80px; height: calc(100vh - 100px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="header">
+  <div class="header-pattern"></div>
+  <div class="header-inner">
+    <div class="logo-row">
+      <div class="logo-circle">
+        <span>M</span>
+        <div class="logo-notch logo-notch-top"></div>
+        <div class="logo-notch logo-notch-bottom"></div>
+      </div>
+      <div>
+        <div class="logo-name">MIAJ</div>
+        <div class="logo-sub">Seguros</div>
+      </div>
+    </div>
+    <h1>Solicite sua Cotação</h1>
+    <p>Preencha o formulário abaixo e receba sua cotação personalizada. Sem compromisso, rápido e seguro.</p>
+    <div class="progress" id="progress"></div>
+  </div>
+</div>
+
+<!-- ═══ CONTENT ═══ -->
+<div class="content" id="app"></div>
+
+<!-- ═══ CHATBOT FAB ═══ -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">💬</button>
+<div class="chat-bubble" id="chatBubble">Precisa de ajuda? 😊<div class="chat-bubble-arrow"></div></div>
+
+<!-- ═══ CHATBOT ═══ -->
+<div class="chatbot" id="chatbot">
+  <div class="chat-header">
+    <div class="chat-avatar">M</div>
+    <div class="chat-header-info">
+      <div class="chat-header-name">MIAJ Seguros</div>
+      <div class="chat-header-status">Assistente Virtual</div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">×</button>
+  </div>
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-footer">Para atendimento humano, chame no WhatsApp</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════
+const RECIPIENT_EMAIL = "ingrid@vadmediagroup.com";
+// TODO: trocar pro email do Lucas quando estiver pronto
+
+// ═══════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════
+const RAMOS = [
+  { id:"auto", label:"Auto", icon:"🚗" },
+  { id:"residencial", label:"Residencial", icon:"🏠" },
+  { id:"empresarial", label:"Empresarial", icon:"🏢" },
+  { id:"vida", label:"Vida", icon:"❤️" },
+  { id:"saude", label:"Saúde", icon:"🏥" },
+  { id:"viagem", label:"Viagem", icon:"✈️" },
+  { id:"condominio", label:"Condomínio", icon:"🏘️" },
+  { id:"rc", label:"Resp. Civil", icon:"⚖️" },
+  { id:"equipamentos", label:"Equipamentos", icon:"🔧" },
+  { id:"transporte", label:"Transporte", icon:"🚛" },
+  { id:"garantia", label:"Garantia", icon:"📋" },
+  { id:"outros", label:"Outros", icon:"📌" },
+];
+
+const RAMO_FIELDS = {
+  auto: [
+    { name:"situacao_veiculo", label:"Situação do Veículo", type:"select", options:["Já possuo o veículo","Estou pesquisando / ainda vou comprar"], required:true, isToggle:true },
+    { name:"placa", label:"Placa do Veículo", type:"text", placeholder:"ABC1D23", showWhen:{field:"situacao_veiculo",value:"Já possuo o veículo"} },
+    { name:"marca_modelo", label:"Marca / Modelo", type:"text", placeholder:"Ex: Fiat Argo 1.0", required:true },
+    { name:"ano_fab", label:"Ano Fabricação", type:"number", placeholder:"2023" },
+    { name:"ano_mod", label:"Ano Modelo", type:"number", placeholder:"2024" },
+    { name:"veiculo_zero", label:"Veículo 0km?", type:"select", options:["Sim","Não"], showWhen:{field:"situacao_veiculo",value:"Estou pesquisando / ainda vou comprar"} },
+    { name:"faixa_valor", label:"Faixa de Valor do Veículo", type:"select", options:["Até R$ 40.000","R$ 40.000 a R$ 70.000","R$ 70.000 a R$ 120.000","R$ 120.000 a R$ 200.000","Acima de R$ 200.000"], showWhen:{field:"situacao_veiculo",value:"Estou pesquisando / ainda vou comprar"} },
+    { name:"uso", label:"Uso do Veículo", type:"select", options:["Particular","Comercial","Transporte de Passageiros","Táxi/App"] },
+    { name:"cep_pernoite", label:"CEP Pernoite", type:"text", placeholder:"49000-000" },
+    { name:"garagem_casa", label:"Garagem em Casa?", type:"select", options:["Sim","Não"] },
+    { name:"garagem_trabalho", label:"Garagem no Trabalho?", type:"select", options:["Sim","Não"] },
+    { name:"condutor_principal", label:"Nome do Condutor Principal", type:"text", placeholder:"Nome completo" },
+    { name:"condutor_nascimento", label:"Data Nasc. Condutor", type:"date" },
+    { name:"condutor_sexo", label:"Sexo do Condutor", type:"select", options:["Masculino","Feminino"] },
+    { name:"possui_seguro", label:"Possui seguro atual?", type:"select", options:["Sim","Não","Primeiro seguro"] },
+    { name:"seguradora_atual", label:"Seguradora Atual (se possui)", type:"text", placeholder:"Ex: Porto Seguro" },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  residencial: [
+    { name:"situacao_imovel", label:"Situação do Imóvel", type:"select", options:["Já possuo / moro no imóvel","Estou pesquisando / ainda vou comprar/alugar"], required:true, isToggle:true },
+    { name:"tipo_imovel", label:"Tipo de Imóvel", type:"select", options:["Casa","Apartamento","Sobrado","Chácara/Sítio"], required:true },
+    { name:"ocupacao", label:"Ocupação", type:"select", options:["Residência habitual","Residência de veraneio","Desocupado"] },
+    { name:"cep", label:"CEP do Imóvel", type:"text", placeholder:"49000-000", showWhen:{field:"situacao_imovel",value:"Já possuo / moro no imóvel"} },
+    { name:"endereco", label:"Endereço Completo", type:"text", placeholder:"Rua, número, bairro", showWhen:{field:"situacao_imovel",value:"Já possuo / moro no imóvel"} },
+    { name:"regiao", label:"Região / Bairro de Interesse", type:"text", placeholder:"Ex: Bairro Jardins, Zona Sul", showWhen:{field:"situacao_imovel",value:"Estou pesquisando / ainda vou comprar/alugar"} },
+    { name:"construcao", label:"Tipo de Construção", type:"select", options:["Alvenaria (tijolo)","Madeira","Mista","Não sei ainda"] },
+    { name:"valor_imovel", label:"Valor Estimado do Imóvel", type:"text", placeholder:"R$ 300.000,00" },
+    { name:"coberturas", label:"Coberturas Desejadas", type:"multicheck", options:["Incêndio/Raio/Explosão","Roubo/Furto","Danos Elétricos","Vendaval/Granizo","Responsabilidade Civil","Assistência 24h"] },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  empresarial: [
+    { name:"razao_social", label:"Razão Social", type:"text", placeholder:"Nome da empresa", required:true },
+    { name:"cnpj", label:"CNPJ", type:"text", placeholder:"00.000.000/0000-00" },
+    { name:"atividade", label:"Atividade Principal", type:"text", placeholder:"Ex: Comércio varejista", required:true },
+    { name:"cep", label:"CEP da Empresa", type:"text", placeholder:"49000-000" },
+    { name:"endereco", label:"Endereço Completo", type:"text", placeholder:"Rua, número, bairro" },
+    { name:"tipo_imovel", label:"Tipo de Imóvel", type:"select", options:["Próprio","Alugado","Comodato"] },
+    { name:"num_funcionarios", label:"Nº de Funcionários", type:"number", placeholder:"Ex: 10" },
+    { name:"faturamento", label:"Faturamento Anual Estimado", type:"text", placeholder:"R$ 500.000,00" },
+    { name:"coberturas", label:"Coberturas Desejadas", type:"multicheck", options:["Incêndio/Raio/Explosão","Roubo/Furto","Danos Elétricos","Resp. Civil","Lucros Cessantes","Equipamentos","Vidros/Letreiros"] },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  vida: [
+    { name:"data_nascimento", label:"Data de Nascimento", type:"date", required:true },
+    { name:"sexo", label:"Sexo", type:"select", options:["Masculino","Feminino"] },
+    { name:"profissao", label:"Profissão", type:"text", placeholder:"Ex: Engenheiro" },
+    { name:"renda", label:"Renda Mensal Aproximada", type:"text", placeholder:"R$ 5.000,00" },
+    { name:"fumante", label:"Fumante?", type:"select", options:["Sim","Não"] },
+    { name:"capital_desejado", label:"Capital Segurado Desejado", type:"text", placeholder:"R$ 200.000,00" },
+    { name:"coberturas", label:"Coberturas Desejadas", type:"multicheck", options:["Morte Natural/Acidental","Invalidez Permanente","Invalidez Funcional","Doenças Graves","Diária de Internação","Assistência Funeral"] },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  saude: [
+    { name:"tipo_plano", label:"Tipo de Plano", type:"select", options:["Individual","Familiar","Empresarial (PME)","Adesão"], required:true },
+    { name:"num_vidas", label:"Número de Vidas (pessoas)", type:"number", placeholder:"Ex: 3", required:true },
+    { name:"faixas_etarias", label:"Faixas Etárias dos Beneficiários", type:"text", placeholder:"Ex: 35, 33, 5 anos" },
+    { name:"acomodacao", label:"Acomodação", type:"select", options:["Enfermaria","Apartamento","Sem preferência"] },
+    { name:"abrangencia", label:"Abrangência", type:"select", options:["Municipal","Estadual","Nacional","Sem preferência"] },
+    { name:"possui_plano", label:"Possui plano atual?", type:"select", options:["Sim","Não"] },
+    { name:"operadora_atual", label:"Operadora Atual (se possui)", type:"text", placeholder:"Ex: Unimed" },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  viagem: [
+    { name:"destino", label:"Destino", type:"select", options:["Nacional","América do Sul","América do Norte","Europa","Ásia","África","Oceania","Múltiplos destinos","Ainda não decidi"], required:true },
+    { name:"data_ida", label:"Data de Ida (estimada)", type:"date" },
+    { name:"data_volta", label:"Data de Volta (estimada)", type:"date" },
+    { name:"num_viajantes", label:"Número de Viajantes", type:"number", placeholder:"Ex: 2", required:true },
+    { name:"idades", label:"Idades dos Viajantes", type:"text", placeholder:"Ex: 30, 28" },
+    { name:"motivo", label:"Motivo da Viagem", type:"select", options:["Lazer/Turismo","Negócios","Estudo","Intercâmbio","Esportes/Aventura"] },
+    { name:"coberturas", label:"Coberturas Desejadas", type:"multicheck", options:["Despesas Médicas","Extravio de Bagagem","Cancelamento de Viagem","Atraso de Voo","Assistência Jurídica","Cobertura COVID"] },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  condominio: [
+    { name:"nome_condominio", label:"Nome do Condomínio", type:"text", placeholder:"Ex: Residencial Sol Nascente", required:true },
+    { name:"tipo", label:"Tipo", type:"select", options:["Residencial","Comercial","Misto"], required:true },
+    { name:"num_unidades", label:"Nº de Unidades", type:"number", placeholder:"Ex: 48" },
+    { name:"num_andares", label:"Nº de Andares", type:"number", placeholder:"Ex: 12" },
+    { name:"cep", label:"CEP", type:"text", placeholder:"49000-000" },
+    { name:"endereco", label:"Endereço Completo", type:"text", placeholder:"Rua, número, bairro" },
+    { name:"valor_total", label:"Valor Total do Condomínio", type:"text", placeholder:"R$ 10.000.000,00" },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  rc: [
+    { name:"tipo_rc", label:"Tipo de RC", type:"select", options:["RC Profissional","RC Geral","RC Empregador","RC Produtos","D&O (Diretores)","Não sei qual preciso"], required:true },
+    { name:"atividade", label:"Atividade/Profissão", type:"text", placeholder:"Ex: Engenharia Civil", required:true },
+    { name:"faturamento", label:"Faturamento Anual", type:"text", placeholder:"R$ 500.000,00" },
+    { name:"capital_desejado", label:"Capital Segurado Desejado", type:"text", placeholder:"R$ 1.000.000,00" },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  equipamentos: [
+    { name:"tipo_equip", label:"Tipo de Equipamento", type:"text", placeholder:"Ex: Máquina escavadeira", required:true },
+    { name:"marca_modelo", label:"Marca / Modelo", type:"text", placeholder:"Ex: Caterpillar 320" },
+    { name:"valor_equip", label:"Valor do Equipamento", type:"text", placeholder:"R$ 250.000,00" },
+    { name:"local_uso", label:"Local de Uso", type:"text", placeholder:"Ex: Obra na BR-101" },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  transporte: [
+    { name:"tipo_carga", label:"Tipo de Carga", type:"text", placeholder:"Ex: Eletrônicos", required:true },
+    { name:"modal", label:"Modal de Transporte", type:"select", options:["Rodoviário","Aéreo","Marítimo","Multimodal"], required:true },
+    { name:"origem", label:"Origem", type:"text", placeholder:"Ex: São Paulo, SP" },
+    { name:"destino", label:"Destino", type:"text", placeholder:"Ex: Aracaju, SE" },
+    { name:"valor_mercadoria", label:"Valor da Mercadoria", type:"text", placeholder:"R$ 100.000,00" },
+    { name:"frequencia", label:"Frequência de Embarques", type:"select", options:["Avulso (único)","Mensal","Semanal","Diário"] },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  garantia: [
+    { name:"tipo_garantia", label:"Tipo de Garantia", type:"select", options:["Judicial","Licitação (Bid Bond)","Performance","Adiantamento de Pagamento","Aduaneira","Não sei qual preciso"], required:true },
+    { name:"valor_garantia", label:"Valor da Garantia", type:"text", placeholder:"R$ 500.000,00" },
+    { name:"prazo", label:"Prazo (meses)", type:"number", placeholder:"Ex: 12" },
+    { name:"beneficiario", label:"Beneficiário / Órgão", type:"text", placeholder:"Ex: Prefeitura Municipal" },
+    { name:"observacoes", label:"Observações", type:"textarea", placeholder:"Alguma informação adicional..." },
+  ],
+  outros: [
+    { name:"tipo_seguro", label:"Qual tipo de seguro você procura?", type:"text", placeholder:"Descreva o que precisa", required:true },
+    { name:"detalhes", label:"Detalhes", type:"textarea", placeholder:"Conte mais sobre o que você precisa segurar, valores envolvidos, prazos...", required:true },
+  ],
+};
+
+const FAQ_DATA = {
+  greeting: { text:"Olá! Sou o assistente virtual da MIAJ Seguros. Como posso ajudar?", options:[{label:"Quero fazer uma cotação",action:"cotacao"},{label:"Dúvidas sobre seguros",action:"duvidas"},{label:"Já sou cliente",action:"cliente"},{label:"Falar com um corretor",action:"corretor"}] },
+  cotacao: { text:"Ótimo! Você pode preencher nosso formulário de cotação aqui mesmo nesta página. É rápido e sem compromisso!", options:[{label:"Quais ramos vocês trabalham?",action:"ramos"},{label:"Quanto tempo demora?",action:"tempo_cotacao"},{label:"Voltar ao início",action:"greeting"}] },
+  duvidas: { text:"Claro! Sobre qual assunto?", options:[{label:"Seguro auto",action:"seguro_auto"},{label:"Seguro residencial",action:"seguro_residencial"},{label:"Seguro de vida",action:"seguro_vida"},{label:"Seguro viagem",action:"seguro_viagem"},{label:"Voltar ao início",action:"greeting"}] },
+  cliente: { text:"Se você já é nosso cliente, pode entrar em contato diretamente com seu corretor pelo WhatsApp!", options:[{label:"Acionar sinistro",action:"sinistro"},{label:"Renovar apólice",action:"renovacao"},{label:"Alterar dados",action:"alteracao"},{label:"Voltar ao início",action:"greeting"}] },
+  corretor: { text:"Nosso time está pronto! Chame no WhatsApp que respondemos rapidinho. Ou preencha o formulário de cotação.", options:[{label:"Horário de atendimento?",action:"horario"},{label:"Fazer cotação",action:"cotacao"},{label:"Voltar ao início",action:"greeting"}] },
+  ramos: { text:"Trabalhamos com Auto, Residencial, Empresarial, Vida, Saúde, Viagem, Resp. Civil, Garantia, Equipamentos, Condomínio, Transporte e mais!", options:[{label:"Fazer cotação",action:"cotacao"},{label:"Voltar ao início",action:"greeting"}] },
+  tempo_cotacao: { text:"Normalmente em até 24 horas úteis! Quanto mais dados no formulário, mais rápido.", options:[{label:"Vou preencher!",action:"cotacao"},{label:"Voltar ao início",action:"greeting"}] },
+  seguro_auto: { text:"O seguro auto protege contra roubo, furto, colisão, incêndio e danos a terceiros. Inclui assistência 24h, carro reserva e mais. Trabalhamos com Porto, Bradesco, Allianz, HDI, Tokio Marine e outras!", options:[{label:"Cotar seguro auto",action:"cotacao"},{label:"Outras dúvidas",action:"duvidas"},{label:"Voltar ao início",action:"greeting"}] },
+  seguro_residencial: { text:"Cobre incêndio, raio, explosão, roubo, danos elétricos, vendaval e mais. Custo benefício excelente! Inclui assistência 24h.", options:[{label:"Cotar residencial",action:"cotacao"},{label:"Outras dúvidas",action:"duvidas"},{label:"Voltar ao início",action:"greeting"}] },
+  seguro_vida: { text:"Proteção financeira pra sua família. Cobre falecimento, invalidez, doenças graves, diárias de internação e assistência funeral.", options:[{label:"Cotar seguro de vida",action:"cotacao"},{label:"Outras dúvidas",action:"duvidas"},{label:"Voltar ao início",action:"greeting"}] },
+  seguro_viagem: { text:"Alguns destinos exigem (Europa/Schengen). Cobre emergências médicas, extravio de bagagem, cancelamento e mais!", options:[{label:"Cotar viagem",action:"cotacao"},{label:"Outras dúvidas",action:"duvidas"},{label:"Voltar ao início",action:"greeting"}] },
+  sinistro: { text:"Registre um B.O. (se aplicável) e entre em contato pelo WhatsApp. Tenha o número da apólice em mãos.", options:[{label:"Falar com corretor",action:"corretor"},{label:"Voltar ao início",action:"greeting"}] },
+  renovacao: { text:"A renovação é feita 30 dias antes do vencimento. Entramos em contato, mas pode adiantar chamando a gente!", options:[{label:"Falar com corretor",action:"corretor"},{label:"Voltar ao início",action:"greeting"}] },
+  alteracao: { text:"Alterações de endereço, condutor ou veículo: entre em contato que fazemos o endosso na apólice.", options:[{label:"Falar com corretor",action:"corretor"},{label:"Voltar ao início",action:"greeting"}] },
+  horario: { text:"Segunda a sexta, 9h às 18h. Sábados 9h às 13h. Fora do horário, deixe mensagem no WhatsApp!", options:[{label:"Fazer cotação",action:"cotacao"},{label:"Voltar ao início",action:"greeting"}] },
+};
+
+// ═══════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════
+let state = { step: 0, ramo: null, personal: { nome:"", email:"", telefone:"", cpf:"" }, ramoData: {}, errors: {} };
+
+// ═══════════════════════════════════════
+//  RENDER HELPERS
+// ═══════════════════════════════════════
+function getVisibleFields() {
+  return (RAMO_FIELDS[state.ramo] || []).filter(f => {
+    if (!f.showWhen) return true;
+    return state.ramoData[f.showWhen.field] === f.showWhen.value;
+  });
+}
+
+function isFullWidth(f) {
+  return f.type==="textarea" || f.type==="multicheck" || f.isToggle || ["endereco","razao_social","tipo_seguro","detalhes"].includes(f.name);
+}
+
+function renderField(f, data) {
+  const val = data[f.name] || "";
+  const err = state.errors[f.name];
+  let html = `<div class="form-group${isFullWidth(f) ? " full-width" : ""}">`;
+  html += `<label class="form-label">${f.label}${f.required ? ' <span class="req">*</span>' : ''}</label>`;
+
+  if (f.type === "select") {
+    html += `<select class="form-select${f.isToggle ? " toggle" : ""}${err ? " error" : ""}" onchange="updateField('${f.name}','${data===state.personal?"personal":"ramo"}',this.value)">`;
+    html += `<option value="">Selecione...</option>`;
+    f.options.forEach(o => html += `<option value="${o}"${val===o?" selected":""}>${o}</option>`);
+    html += `</select>`;
+  } else if (f.type === "textarea") {
+    html += `<textarea class="form-textarea${err ? " error" : ""}" rows="3" placeholder="${f.placeholder||""}" onchange="updateField('${f.name}','${data===state.personal?"personal":"ramo"}',this.value)">${val}</textarea>`;
+  } else if (f.type === "multicheck") {
+    html += `<div class="multicheck">`;
+    const arr = data[f.name] || [];
+    f.options.forEach(o => html += `<button class="multicheck-btn${arr.includes(o)?" checked":""}" onclick="toggleMulti('${f.name}','${o}')">${o}</button>`);
+    html += `</div>`;
+  } else {
+    html += `<input class="form-input${err ? " error" : ""}" type="${f.type||"text"}" value="${val}" placeholder="${f.placeholder||""}" onchange="updateField('${f.name}','${data===state.personal?"personal":"ramo"}',this.value)">`;
+  }
+
+  if (err) html += `<div class="form-error">${err}</div>`;
+  html += `</div>`;
+  return html;
+}
+
+// ═══════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════
+function render() {
+  const app = document.getElementById("app");
+  const ramoInfo = RAMOS.find(r => r.id === state.ramo);
+
+  // Progress
+  const steps = ["Ramo","Seus Dados","Detalhes","Enviar"];
+  let progHtml = "";
+  if (state.step < 4) {
+    steps.forEach((s, i) => {
+      const act = state.step >= i;
+      const cur = state.step === i;
+      progHtml += `<div class="progress-step">`;
+      progHtml += `<div class="progress-num ${act?"active":"inactive"}">${i+1}</div>`;
+      progHtml += `<span class="progress-label ${act?"active":"inactive"}"${cur?" style='font-weight:700'":""}>${s}</span>`;
+      if (i < 3) progHtml += `<div class="progress-line ${state.step>i?"active":"inactive"}"></div>`;
+      progHtml += `</div>`;
+    });
+  }
+  document.getElementById("progress").innerHTML = progHtml;
+  document.getElementById("progress").style.display = state.step >= 4 ? "none" : "flex";
+
+  // Step 0: Ramo selection
+  if (state.step === 0) {
+    let h = `<div class="section"><h2 class="section-title">Qual tipo de seguro você precisa?</h2><p class="section-subtitle">Selecione o ramo para ver os campos específicos</p><div class="ramo-grid">`;
+    RAMOS.forEach(r => { h += `<div class="ramo-card" onclick="selectRamo('${r.id}')"><div class="ramo-card-icon">${r.icon}</div><div class="ramo-card-label">${r.label}</div></div>`; });
+    h += `</div></div>`;
+    app.innerHTML = h;
+  }
+
+  // Step 1: Personal data
+  else if (state.step === 1) {
+    let h = `<div class="section"><div class="section-title-row"><span class="section-icon">${ramoInfo.icon}</span><h2 class="section-title">Seguro ${ramoInfo.label}</h2></div><p class="section-subtitle">Primeiro, seus dados de contato</p>`;
+    h += `<div class="form-card"><div class="form-grid">`;
+    h += `<div class="full-width">${renderField({name:"nome",label:"Nome Completo",type:"text",placeholder:"Seu nome completo",required:true}, state.personal)}</div>`;
+    h += renderField({name:"email",label:"E-mail",type:"email",placeholder:"seu@email.com",required:true}, state.personal);
+    h += renderField({name:"telefone",label:"Telefone / WhatsApp",type:"text",placeholder:"(79) 99999-9999",required:true}, state.personal);
+    h += renderField({name:"cpf",label:"CPF",type:"text",placeholder:"000.000.000-00"}, state.personal);
+    h += `</div><div class="btn-row"><button class="btn-back" onclick="goStep(0)">Voltar</button><button class="btn-next" onclick="goStep1Next()">Continuar →</button></div></div></div>`;
+    app.innerHTML = h;
+  }
+
+  // Step 2: Ramo-specific fields
+  else if (state.step === 2) {
+    const detailLabel = state.ramo==="auto" ? "do Veículo" : state.ramo==="residencial" ? "do Imóvel" : state.ramo==="vida" ? "Pessoais" : `do Seguro ${ramoInfo.label}`;
+    let h = `<div class="section"><div class="section-title-row"><span class="section-icon">${ramoInfo.icon}</span><h2 class="section-title">Detalhes ${detailLabel}</h2></div><p class="section-subtitle">Quanto mais informações, melhor a cotação!</p>`;
+
+    // Hints
+    if (state.ramo==="auto" && state.ramoData.situacao_veiculo==="Já possuo o veículo") {
+      h += `<div class="hint-box hint-yellow"><span class="hint-icon">🚗</span><span>Dica: informe a placa que buscamos automaticamente marca, modelo e ano!</span></div>`;
+    }
+    if (state.ramo==="auto" && state.ramoData.situacao_veiculo==="Estou pesquisando / ainda vou comprar") {
+      h += `<div class="hint-box hint-blue"><span class="hint-icon">💡</span><span>Sem problema! Informe o modelo de interesse e a gente faz uma cotação estimada pra te ajudar na decisão.</span></div>`;
+    }
+    if (state.ramo==="residencial" && state.ramoData.situacao_imovel==="Estou pesquisando / ainda vou comprar/alugar") {
+      h += `<div class="hint-box hint-blue"><span class="hint-icon">💡</span><span>Tudo bem! Informe a região de interesse e o tipo de imóvel que a gente já prepara uma estimativa.</span></div>`;
+    }
+
+    h += `<div class="form-card"><div class="form-grid">`;
+    getVisibleFields().forEach(f => h += (isFullWidth(f) ? `<div class="full-width">${renderField(f,state.ramoData)}</div>` : renderField(f,state.ramoData)));
+    h += `</div><div class="btn-row"><button class="btn-back" onclick="goStep(1)">Voltar</button><button class="btn-next" onclick="submitForm()">Enviar Cotação →</button></div></div></div>`;
+    app.innerHTML = h;
+  }
+
+  // Step 3+: Success
+  else {
+    const ri = ramoInfo || { icon:"📌", label:"Seguro" };
+    let h = `<div class="success"><div class="success-check">✓</div><h2>Cotação Enviada!</h2><p>Seus dados foram enviados por email para nossa equipe. Entraremos em contato em até 24 horas úteis com as melhores opções para você.</p><p class="sub">${ri.icon} Seguro ${ri.label} para ${state.personal.nome}</p>`;
+    h += `<div class="success-btns"><button class="btn-back" onclick="resetForm()">Nova Cotação</button><a class="btn-whatsapp" href="https://wa.me/5579998163242" target="_blank">💬 Falar no WhatsApp</a></div></div>`;
+    app.innerHTML = h;
+  }
+}
+
+// ═══════════════════════════════════════
+//  ACTIONS
+// ═══════════════════════════════════════
+function selectRamo(id) { state.ramo = id; state.ramoData = {}; state.errors = {}; state.step = 1; render(); }
+function goStep(n) { state.errors = {}; state.step = n; render(); }
+
+function updateField(name, target, value) {
+  if (target === "personal") state.personal[name] = value;
+  else state.ramoData[name] = value;
+  delete state.errors[name];
+  // Re-render if toggle field changed (to show/hide conditional fields)
+  const fields = RAMO_FIELDS[state.ramo] || [];
+  const field = fields.find(f => f.name === name);
+  if (field && field.isToggle) render();
+}
+
+function toggleMulti(name, option) {
+  const arr = state.ramoData[name] || [];
+  state.ramoData[name] = arr.includes(option) ? arr.filter(x => x !== option) : [...arr, option];
+  render();
+}
+
+function goStep1Next() {
+  state.errors = {};
+  if (!state.personal.nome.trim()) state.errors.nome = "Obrigatório";
+  if (!state.personal.telefone.trim()) state.errors.telefone = "Obrigatório";
+  if (!state.personal.email.trim()) state.errors.email = "Obrigatório";
+  if (Object.keys(state.errors).length > 0) { render(); return; }
+  state.step = 2;
+  render();
+}
+
+function submitForm() {
+  state.errors = {};
+  getVisibleFields().forEach(f => {
+    if (f.required && !state.ramoData[f.name]?.toString().trim()) state.errors[f.name] = "Obrigatório";
+  });
+  if (Object.keys(state.errors).length > 0) { render(); return; }
+
+  // Build email
+  const ramoLabel = RAMOS.find(r => r.id === state.ramo)?.label || state.ramo;
+  const now = new Date();
+  let body = `═══════════════════════════════\n`;
+  body += `   NOVA COTAÇÃO - MIAJ SEGUROS\n`;
+  body += `═══════════════════════════════\n\n`;
+  body += `Ramo: ${ramoLabel}\n`;
+  body += `Data: ${now.toLocaleDateString("pt-BR")} às ${now.toLocaleTimeString("pt-BR")}\n\n`;
+  body += `── DADOS DO CLIENTE ──\n`;
+  body += `Nome: ${state.personal.nome}\n`;
+  body += `Email: ${state.personal.email}\n`;
+  body += `Telefone: ${state.personal.telefone}\n`;
+  if (state.personal.cpf) body += `CPF: ${state.personal.cpf}\n`;
+  body += `\n── DETALHES (${ramoLabel}) ──\n`;
+
+  getVisibleFields().forEach(f => {
+    const val = state.ramoData[f.name];
+    if (val && val.toString().trim()) {
+      body += `${f.label}: ${Array.isArray(val) ? val.join(", ") : val}\n`;
+    }
+  });
+
+  body += `\n═══════════════════════════════\nEnviado pelo formulário MIAJ Seguros`;
+  const subject = `Nova Cotação ${ramoLabel} - ${state.personal.nome}`;
+  window.open(`mailto:${RECIPIENT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+
+  state.step = 4;
+  render();
+}
+
+function resetForm() {
+  state = { step: 0, ramo: null, personal: { nome:"", email:"", telefone:"", cpf:"" }, ramoData: {}, errors: {} };
+  render();
+}
+
+// ═══════════════════════════════════════
+//  CHATBOT
+// ═══════════════════════════════════════
+let chatOpen = false;
+let chatMessages = [{ from:"bot", key:"greeting" }];
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById("chatbot").classList.toggle("open", chatOpen);
+  document.getElementById("chatFab").classList.toggle("open", chatOpen);
+  document.getElementById("chatFab").textContent = chatOpen ? "✕" : "💬";
+  document.getElementById("chatBubble").style.display = chatOpen ? "none" : "block";
+  if (chatOpen) renderChat();
+}
+
+function renderChat() {
+  const el = document.getElementById("chatMessages");
+  let h = "";
+  chatMessages.forEach(msg => {
+    if (msg.from === "bot") {
+      const faq = FAQ_DATA[msg.key];
+      h += `<div class="chat-msg-bot"><div class="chat-msg-avatar">M</div><div><div class="chat-msg-text">${faq.text}</div>`;
+      if (faq.options) {
+        h += `<div class="chat-options">`;
+        faq.options.forEach(o => h += `<button class="chat-option" onclick="chatAction('${o.action}','${o.label.replace(/'/g,"\\'")}')">${o.label}</button>`);
+        h += `</div>`;
+      }
+      h += `</div></div>`;
+    } else {
+      h += `<div class="chat-msg-user"><div class="chat-msg-user-text">${msg.text}</div></div>`;
+    }
+  });
+  el.innerHTML = h;
+  el.scrollTop = el.scrollHeight;
+}
+
+function chatAction(action, label) {
+  chatMessages.push({ from:"user", text: label });
+  chatMessages.push({ from:"bot", key: action });
+  renderChat();
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+render();
+</script>
+</body>
+</html>
