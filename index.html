@@ -194,12 +194,19 @@ body { font-family: 'Open Sans', sans-serif; background: #f0f1f3; min-height: 10
   <div class="chat-footer">Para atendimento humano, chame no WhatsApp</div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ═══════════════════════════════════════
 //  CONFIG
 // ═══════════════════════════════════════
 const RECIPIENT_EMAIL = "ingrid@vadmediagroup.com";
 // TODO: trocar pro email do Lucas quando estiver pronto
+
+// ═══ EMAILJS CONFIG ═══
+// Preencha com seus dados do emailjs.com:
+const EMAILJS_SERVICE_ID  = "service_1gj3l27";
+const EMAILJS_TEMPLATE_ID = "template_pc28x0v";
+const EMAILJS_PUBLIC_KEY   = "-4iGzWmg1hL71lTHc";
 
 // ═══════════════════════════════════════
 //  DATA
@@ -541,7 +548,27 @@ function submitForm() {
 
   body += `\n═══════════════════════════════\nEnviado pelo formulário MIAJ Seguros`;
   const subject = `Nova Cotação ${ramoLabel} - ${state.personal.nome}`;
-  window.open(`mailto:${RECIPIENT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+
+  // Enviar via EmailJS
+  if (EMAILJS_SERVICE_ID !== "COLE_SEU_SERVICE_ID_AQUI") {
+    emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      subject: subject,
+      message: body,
+      name: state.personal.nome,
+      from_email: state.personal.email,
+      from_phone: state.personal.telefone,
+    }, EMAILJS_PUBLIC_KEY)
+    .then(function() {
+      console.log("Email enviado com sucesso!");
+    })
+    .catch(function(err) {
+      console.error("Erro ao enviar:", err);
+      alert("Houve um erro ao enviar. Tente novamente ou entre em contato pelo WhatsApp.");
+    });
+  } else {
+    // Fallback mailto caso EmailJS não esteja configurado
+    window.open(`mailto:${RECIPIENT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`, "_blank");
+  }
 
   state.step = 4;
   render();
